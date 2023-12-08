@@ -20,7 +20,7 @@ iterator itemsBorrowedFrom*[T](s: var seq[T]): T {.inline.} =
   ## Due to safety concerns, the memory of `s` is kept out of reach during the iterations;
   ## anyone trying to access `s` will instead get an empty `seq`, and the attempt to access any of its elements could instead cause an `IndexDefect`;
   ## this lasts until the last iteration is finished, and after that, `s` will be restored.
-  ## Any attempt to modify `s` (including trying to `add` or assign to it) within the loop, except by using an address that's taken before the first iteration, will not have its effect to last after the end of the last iteration.
+  ## Any attempt to modify `s` (including trying to `add` or assign to it) within the loop, except by using an address that's taken from an element before the first iteration, will not have its effect to last after the end of the last iteration.
   ##
   ## Despite its name, this is unrelated with view types. The current implementation uses move semantics internally.
   var tmp = move(s)
@@ -33,7 +33,7 @@ iterator mutableItemsBorrowedFrom*[T](s: var seq[T]): var T {.inline.} =
   ## Due to safety concerns, the memory of `s` is kept out of reach (except by using the yielded variable) during the iterations;
   ## anyone trying to access `s` will instead get an empty `seq`, and the attempt to access any of its elements could instead cause an `IndexDefect`;
   ## this lasts until the last iteration is finished, and after that, `s` will be restored.
-  ## Any attempt to modify `s` (including trying to `add` or assign to it) within the loop (except by using the yielded variable or an address that's taken before the first iteration or from a yielded variable) will not have its effect to last after the end of the last iteration.
+  ## Any attempt to modify `s` (including trying to `add` or assign to it) within the loop (except by using the yielded variable or an address that's taken from an element before the first iteration or from a yielded variable) will not have its effect to last after the end of the last iteration.
   ## The current implementation uses `addr`.
   ##
   ## Despite its name, this is unrelated with view types. The current implementation uses move semantics internally.

@@ -1,4 +1,4 @@
-iterator countUpBy1*[T: SomeSignedInt](start, stop: T): T {.inline.} =
+iterator countUpBy1*[T: SomeInteger](start, stop: T): T {.inline.} =
   ## Yields all numbers from the interval [`start`, `stop`] sequentially.
   if likely(start <= stop):
     var n = start
@@ -6,4 +6,7 @@ iterator countUpBy1*[T: SomeSignedInt](start, stop: T): T {.inline.} =
       yield n
       if n == stop: # Overflows are prevented by performing this check before addition.
         break
-      n = n +% 1
+      when T is SomeSignedInt:
+        n = n +% 1
+      else:
+        n += 1

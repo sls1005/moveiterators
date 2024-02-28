@@ -4,9 +4,10 @@ iterator countUpBy1*[T: SomeInteger](start, stop: T): T {.inline.} =
     var n = start
     while true:
       yield n
-      if n == stop: # Overflows are prevented by performing this check before addition.
-        break
-      when T is SomeSignedInt:
-        n = n +% 1
+      if n < stop: # Overflows are prevented by performing this check before addition.
+        when T is SomeSignedInt:
+          n = n +% 1
+        else:
+          n += 1
       else:
-        n += 1
+        break
